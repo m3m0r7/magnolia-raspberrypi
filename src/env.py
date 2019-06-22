@@ -47,11 +47,16 @@ while True:
                 cputemp = cputemp.replace('\'C', '')
                 cputemp = float(cputemp)
 
+                # Packet: Kind Tag (1byte) + Real data (4byte)
+                # 0x00 = Temperature
+                # 0x10 = Humidity
+                # 0x20 = Pressure
+                # 0x30 = CPU Temperature
                 server.sendall(
-                    pack("f", temp) +
-                    pack("f", humidity) +
-                    pack("f", pressure) +
-                    pack("f", cputemp)
+                    pack("Bf", 0x00, temp) +
+                    pack("Bf", 0x10, humidity) +
+                    pack("Bf", 0x20, pressure) +
+                    pack("Bf", 0x30, cputemp)
                 )
                 time.sleep(5)
         except Exception as e:
