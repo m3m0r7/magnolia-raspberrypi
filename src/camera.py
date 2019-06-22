@@ -68,5 +68,5 @@ with picamera.PiCamera(resolution='640x480', framerate=24) as camera:
                 )
         finally:
             camera.stop_recording()
-        print("Continue to start. Please wait 10 sec.\n")
-        time.sleep(10)
+            print("Continue to start. Please wait 10 sec.\n")
+            time.sleep(10)
