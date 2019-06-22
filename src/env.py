@@ -59,12 +59,11 @@ while True:
                 # 0x30 = CPU Temperature
 
                 logging.debug("Send a data")
-                server.sendall(
-                    pack("Bf", 0x00, temp) +
-                    pack("Bf", 0x10, humidity) +
-                    pack("Bf", 0x20, pressure) +
-                    pack("Bf", 0x30, cputemp)
-                )
+
+                server.send(pack("Bf", 0x00, temp))
+                server.send(pack("Bf", 0x10, humidity))
+                server.send(pack("Bf", 0x20, pressure))
+                server.send(pack("Bf", 0x30, cputemp))
 
                 logging.debug("Waiting")
                 time.sleep(5)
