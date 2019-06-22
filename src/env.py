@@ -10,7 +10,7 @@ from sense_hat import SenseHat
 # Set logging format
 formatter = '[%(levelname)s][%(asctime)s] %(message)s'
 logging.basicConfig(
-    level=logging.INFO,
+    level=logging.DEBUG,
     format=formatter
 )
 
@@ -57,12 +57,16 @@ while True:
                 # 0x10 = Humidity
                 # 0x20 = Pressure
                 # 0x30 = CPU Temperature
+
+                logging.debug("Send a data")
                 server.sendall(
                     pack("Bf", 0x00, temp) +
                     pack("Bf", 0x10, humidity) +
                     pack("Bf", 0x20, pressure) +
                     pack("Bf", 0x30, cputemp)
                 )
+
+                logging.debug("Waiting")
                 time.sleep(5)
         except Exception as e:
             logging.warning(
