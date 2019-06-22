@@ -58,6 +58,8 @@ while True:
                 address,
                 str(e)
             )
+    except Exception as e:
+        print("Connection refuse.\n")
     finally:
         print("Continue to start. Please wait 10 sec.\n")
         time.sleep(10)
