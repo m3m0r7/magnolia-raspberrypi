@@ -80,6 +80,9 @@ while True:
                 sendPacket(server, 0x20, pressure)
                 sendPacket(server, 0x30, cputemp)
 
+                logging.debug("Close connection")
+                server.close()
+
                 logging.debug("Waiting")
                 time.sleep(5)
         except Exception as e:
