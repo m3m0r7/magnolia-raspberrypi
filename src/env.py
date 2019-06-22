@@ -12,13 +12,13 @@ def sendPacket(server, kindTag, value):
     server.sendall(pack("B", kindTag))
 
     # Data
-    splitValue = str(value).split(".")
-    if len(splitValue) == 1
-        splitValue[1] = "0"
+    splitValue = str(round(value, 2)).split(".")
+
+    if len(splitValue) == 1:
+        splitValue.append("0")
     server.sendall(
         pack("ll", int(splitValue[0]), int(splitValue[1]))
     )
-
 
 # Set logging format
 formatter = '[%(levelname)s][%(asctime)s] %(message)s'
