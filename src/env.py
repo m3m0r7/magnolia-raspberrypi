@@ -13,6 +13,8 @@ def sendPacket(server, kindTag, value):
 
     # Data
     splitValue = str(value).split(".")
+    if len(splitValue) == 1
+        splitValue[1] = "0"
     server.sendall(
         pack("ll", int(splitValue[0]), int(splitValue[1]))
     )
