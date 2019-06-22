@@ -7,6 +7,17 @@ from socket import *
 from struct import *
 from sense_hat import SenseHat
 
+def sendPacket(server, kindTag, value):
+    # Kind Tag
+    server.sendall(pack("B", kindTag))
+
+    # Data
+    splitValue = str(value).split(".")
+    server.sendall(
+        pack("ll", splitValue[0], splitValue[1])
+    )
+
+
 # Set logging format
 formatter = '[%(levelname)s][%(asctime)s] %(message)s'
 logging.basicConfig(
@@ -60,10 +71,10 @@ while True:
 
                 logging.debug("Send a data")
 
-                server.send(pack("Bf", 0x00, temp))
-                server.send(pack("Bf", 0x10, humidity))
-                server.send(pack("Bf", 0x20, pressure))
-                server.send(pack("Bf", 0x30, cputemp))
+                sendPacket(server, 0x00, temp)
+                sendPacket(server, 0x10, humidity)
+                sendPacket(server, 0x20, pressure)
+                sendPacket(server, 0x30, cputemp)
 
                 logging.debug("Waiting")
                 time.sleep(5)
