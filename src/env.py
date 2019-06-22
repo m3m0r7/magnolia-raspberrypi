@@ -14,7 +14,7 @@ def sendPacket(server, kindTag, value):
     # Data
     splitValue = str(value).split(".")
     server.sendall(
-        pack("ll", splitValue[0], splitValue[1])
+        pack("ll", int(splitValue[0]), int(splitValue[1]))
     )
 
 
