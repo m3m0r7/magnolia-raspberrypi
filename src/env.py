@@ -16,6 +16,7 @@ def sendPacket(server, kindTag, value):
 
     if len(splitValue) == 1:
         splitValue.append("0")
+
     server.sendall(
         pack("ll", int(splitValue[0]), int(splitValue[1]))
     )
@@ -40,14 +41,14 @@ while True:
             args.ip,
             int(args.port)
         )
-        server = socket(
-            AF_INET,
-            SOCK_STREAM
-        )
-        server.connect(address)
         sense = SenseHat()
         try:
             while True:
+                server = socket(
+                    AF_INET,
+                    SOCK_STREAM
+                )
+                server.connect(address)
                 logging.debug("Processing")
 
                 # Get environment from Sensor Hat
@@ -73,11 +74,16 @@ while True:
 
                 logging.debug("Send a data")
 
+                # Send packet information
+                server.sendall(pack("BB", 0xff, 4))
+
+                # Send packets
                 sendPacket(server, 0x00, temp)
                 sendPacket(server, 0x10, humidity)
                 sendPacket(server, 0x20, pressure)
                 sendPacket(server, 0x30, cputemp)
 
+                server.close()
                 logging.debug("Waiting")
                 time.sleep(5)
         except Exception as e:
