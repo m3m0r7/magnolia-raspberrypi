@@ -7,19 +7,21 @@ from socket import *
 from struct import *
 from sense_hat import SenseHat
 
+# Set logging format
+formatter = '[%(levelname)s][%(asctime)s] %(message)s'
+logging.basicConfig(
+    level=logging.INFO,
+    format=formatter
+)
+
+# Connection Parameters
 parser = argparse.ArgumentParser()
 parser.add_argument("ip")
 parser.add_argument("port")
 args = parser.parse_args()
-if not args.ip:
-    print("Must set --ip\n")
-    sys.exit()
-if not args.port:
-    print("Must set --port\n")
-    sys.exit()
 
 while True:
-    print("Starting env.\n")
+    logging.info("Starting env.")
     try:
         address = (
             args.ip,
@@ -42,7 +44,7 @@ while True:
                 process = os.popen('/opt/vc/bin/vcgencmd measure_temp')
                 cputemp = process.read()
                 cputemp = cputemp.replace('temp=', '')
-                cputemp = cputemp.replace('\'C\n', '')
+                cputemp = cputemp.replace('\'C', '')
                 cputemp = float(cputemp)
 
                 server.sendall(
@@ -59,7 +61,7 @@ while True:
                 str(e)
             )
     except Exception as e:
-        print("Connection refuse.\n")
+        logging.warning("Connection refuse.")
     finally:
-        print("Continue to start. Please wait 10 sec.\n")
+        logging.warning("Continue to start. Please wait 10 sec.")
         time.sleep(10)

@@ -26,22 +26,24 @@ class StreamingOutput(object):
         return self.buffer.write(buf)
 
 with picamera.PiCamera(resolution='640x480', framerate=24) as camera:
+
+    # Set logging format
+    formatter = '[%(levelname)s][%(asctime)s] %(message)s'
+    logging.basicConfig(
+        level=logging.INFO,
+        format=formatter
+    )
+
     parser = argparse.ArgumentParser()
     parser.add_argument("ip")
     parser.add_argument("port")
     args = parser.parse_args()
-    if not args.ip:
-        print("Must set --ip\n")
-        sys.exit()
-    if not args.port:
-        print("Must set --port\n")
-        sys.exit()
 
     output = StreamingOutput()
     camera.start_recording(output, format='mjpeg')
 
     while True:
-        print("Starting camera.\n")
+        logging.info("Starting camera.")
         try:
             address = (
                 args.ip,
@@ -68,5 +70,5 @@ with picamera.PiCamera(resolution='640x480', framerate=24) as camera:
                 )
         finally:
             camera.stop_recording()
-            print("Continue to start. Please wait 10 sec.\n")
+            logging.warning("Continue to start. Please wait 10 sec.")
             time.sleep(10)
