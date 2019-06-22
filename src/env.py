@@ -35,12 +35,17 @@ while True:
         sense = SenseHat()
         try:
             while True:
+                logging.debug("Processing")
+
                 # Get environment from Sensor Hat
+
+                logging.debug("Getting sensor hat environments")
                 humidity = sense.get_humidity()
                 pressure = sense.get_pressure()
                 temp = sense.get_temperature_from_pressure()
 
                 # Get CPU temperature
+                logging.debug("Getting measure temp")
                 process = os.popen('/opt/vc/bin/vcgencmd measure_temp')
                 cputemp = process.read()
                 cputemp = cputemp.replace('temp=', '')
