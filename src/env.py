@@ -44,10 +44,12 @@ while True:
             AF_INET,
             SOCK_STREAM
         )
-        server.connect(address)
         sense = SenseHat()
         try:
             while True:
+
+                logging.debug("Try to connect to server")
+                server.connect(address)
                 logging.debug("Processing")
 
                 # Get environment from Sensor Hat
