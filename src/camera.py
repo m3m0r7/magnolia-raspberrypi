@@ -60,7 +60,7 @@ with picamera.PiCamera(resolution='640x480', framerate=24) as camera:
                         output.condition.wait()
                         frame = output.frame
                     server.sendall(
-                        os.environ.get("AUTH_KEY") + pack("L", len(frame)) + frame
+                        bytes(os.environ.get("AUTH_KEY", "").encode('utf-8')) + pack("L", len(frame)) + frame
                     )
             except Exception as e:
                 logging.warning(

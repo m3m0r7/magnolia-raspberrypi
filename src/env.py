@@ -73,9 +73,9 @@ while True:
                 server.sendall(pack("BB", 0xff, 4))
 
 
-                auth_key = os.environ.get("AUTH_KEY")
+                auth_key = bytes(os.environ.get("AUTH_KEY", "").encode("utf-8"))
                 # Auth Key
-                if len(auth_key) > 0
+                if len(auth_key) > 0:
                     server.sendall(auth_key)
 
                 # Send packets
