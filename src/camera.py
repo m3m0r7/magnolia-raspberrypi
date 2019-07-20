@@ -9,6 +9,9 @@ from struct import *
 import argparse
 import sys
 import time
+from dotenv import load_dotenv
+import os
+from os.path import join, dirname
 
 class StreamingOutput(object):
     def __init__(self):
@@ -30,14 +33,11 @@ with picamera.PiCamera(resolution='640x480', framerate=24) as camera:
     # Set logging format
     formatter = '[%(levelname)s][%(asctime)s] %(message)s'
     logging.basicConfig(
-        level=logging.INFO,
+        level=logging.WARNING,
         format=formatter
     )
 
-    parser = argparse.ArgumentParser()
-    parser.add_argument("ip")
-    parser.add_argument("port")
-    args = parser.parse_args()
+    load_dotenv(join(dirname(__file__), '../.env'))
 
     output = StreamingOutput()
     camera.start_recording(output, format='mjpeg')
@@ -46,8 +46,8 @@ with picamera.PiCamera(resolution='640x480', framerate=24) as camera:
         logging.info("Starting camera.")
         try:
             address = (
-                args.ip,
-                int(args.port)
+                os.environ.get("CAMERA_RECEIVE_SERVER_HOST"),
+                int(os.environ.get("CAMERA_RECEIVE_SERVER_PORT"))
             )
             server = socket(
                 AF_INET,
@@ -60,7 +60,7 @@ with picamera.PiCamera(resolution='640x480', framerate=24) as camera:
                         output.condition.wait()
                         frame = output.frame
                     server.sendall(
-                        pack("L", len(frame)) + frame
+                        os.environ.get("AUTH_KEY") + pack("L", len(frame)) + frame
                     )
             except Exception as e:
                 logging.warning(

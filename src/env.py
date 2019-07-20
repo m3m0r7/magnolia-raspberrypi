@@ -6,6 +6,9 @@ import os
 from socket import *
 from struct import *
 from sense_hat import SenseHat
+from dotenv import load_dotenv
+import os
+from os.path import join, dirname
 
 def sendPacket(server, kindTag, value):
     # Kind Tag
@@ -24,22 +27,19 @@ def sendPacket(server, kindTag, value):
 # Set logging format
 formatter = '[%(levelname)s][%(asctime)s] %(message)s'
 logging.basicConfig(
-    level=logging.DEBUG,
+    level=logging.WARNING,
     format=formatter
 )
 
 # Connection Parameters
-parser = argparse.ArgumentParser()
-parser.add_argument("ip")
-parser.add_argument("port")
-args = parser.parse_args()
+load_dotenv(join(dirname(__file__), '../.env'))
 
 while True:
     logging.info("Starting env.")
     try:
         address = (
-            args.ip,
-            int(args.port)
+            os.environ.get("CAMERA_RECEIVE_SERVER_HOST"),
+            int(os.environ.get("CAMERA_RECEIVE_SERVER_PORT"))
         )
         sense = SenseHat()
         try:
@@ -66,18 +66,25 @@ while True:
                 cputemp = cputemp.replace('\'C', '')
                 cputemp = float(cputemp)
 
+                logging.debug("Send a data")
+
+                # Send packet information
+                # Start Point (1 byte) + Environments count (1 byte)
+                server.sendall(pack("BB", 0xff, 4))
+
+
+                auth_key = os.environ.get("AUTH_KEY")
+                # Auth Key
+                if len(auth_key) > 0
+                    server.sendall(auth_key)
+
+                # Send packets
                 # Packet: Kind Tag (1byte) + Real data (4byte)
                 # 0x00 = Temperature
                 # 0x10 = Humidity
                 # 0x20 = Pressure
                 # 0x30 = CPU Temperature
 
-                logging.debug("Send a data")
-
-                # Send packet information
-                server.sendall(pack("BB", 0xff, 4))
-
-                # Send packets
                 sendPacket(server, 0x00, temp)
                 sendPacket(server, 0x10, humidity)
                 sendPacket(server, 0x20, pressure)
