@@ -5,7 +5,7 @@ Description = Lily server
 ExecStart = /var/src/magnolia-raspberrypi/start_env.sh
 Restart = always
 Type = simple
-WorkingDirectory=/var/src/magnolia-raspberrypi
+WorkingDirectory=/var/src/magnolia-raspberrypi/src
 
 [Install]
 WantedBy = multi-user.target
