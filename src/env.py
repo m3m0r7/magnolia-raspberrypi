@@ -76,7 +76,7 @@ while True:
                 # Send packet information
                 # Environments count (1 byte)
                 server.sendall(pack("B", 4))
-                
+
                 # Send packets
                 # Packet: Kind Tag (1byte) + Real data (4byte)
                 # 0x00 = Temperature
@@ -91,7 +91,7 @@ while True:
 
                 server.close()
                 logging.debug("Waiting")
-                time.sleep(5)
+                time.sleep(30)
         except Exception as e:
             logging.warning(
                 'Disconnect client %s: %s',
