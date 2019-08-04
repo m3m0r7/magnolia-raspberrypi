@@ -68,16 +68,15 @@ while True:
 
                 logging.debug("Send a data")
 
-                # Send packet information
-                # Environments count (1 byte)
-                server.sendall(pack("B", 4))
-
-
                 auth_key = bytes(os.environ.get("AUTH_KEY", "").encode("utf-8"))
                 # Auth Key
                 if len(auth_key) > 0:
                     server.sendall(auth_key)
 
+                # Send packet information
+                # Environments count (1 byte)
+                server.sendall(pack("B", 4))
+                
                 # Send packets
                 # Packet: Kind Tag (1byte) + Real data (4byte)
                 # 0x00 = Temperature
