@@ -38,8 +38,8 @@ while True:
     logging.info("Starting env.")
     try:
         address = (
-            os.environ.get("CAMERA_RECEIVE_SERVER_HOST"),
-            int(os.environ.get("CAMERA_RECEIVE_SERVER_PORT"))
+            os.environ.get("ENV_RECEIVE_SERVER_HOST"),
+            int(os.environ.get("ENV_RECEIVE_SERVER_PORT"))
         )
         sense = SenseHat()
         try:
@@ -69,8 +69,8 @@ while True:
                 logging.debug("Send a data")
 
                 # Send packet information
-                # Start Point (1 byte) + Environments count (1 byte)
-                server.sendall(pack("BB", 0xff, 4))
+                # Environments count (1 byte)
+                server.sendall(pack("B", 4))
 
 
                 auth_key = bytes(os.environ.get("AUTH_KEY", "").encode("utf-8"))
