@@ -56,12 +56,13 @@ with picamera.PiCamera(resolution='640x480', framerate=24) as camera:
                         SOCK_STREAM
                     )
                     server.connect(address)
-                    with output.condition:
-                        output.condition.wait()
-                        frame = output.frame
-                    server.sendall(
-                        bytes(os.environ.get("AUTH_KEY", "").encode('utf-8')) + pack("L", len(frame)) + frame
-                    )
+                    while True:
+                        with output.condition:
+                            output.condition.wait()
+                            frame = output.frame
+                        server.sendall(
+                            bytes(os.environ.get("AUTH_KEY", "").encode('utf-8')) + pack("L", len(frame)) + frame
+                        )
                 except Exception as e:
                     logging.warning(
                         'Disconnect client %s: %s',
