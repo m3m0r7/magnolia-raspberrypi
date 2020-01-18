@@ -28,7 +28,7 @@ class StreamingOutput(object):
             self.buffer.seek(0)
         return self.buffer.write(buf)
 
-with picamera.PiCamera(resolution='640x480', framerate=24) as camera:
+with picamera.PiCamera(resolution='900x675', framerate=24) as camera:
 
     # Set logging format
     formatter = '[%(levelname)s][%(asctime)s] %(message)s'
